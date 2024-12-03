@@ -25,7 +25,6 @@ class TipoPrenda(models.Model):
 
 # Diseño (cada usuario puede crear un diseño para un tipo de prenda)
 class Disenador(models.Model):
-    nombre = models.CharField(max_length=255)  # Nombre del diseño
     imagen = models.ImageField(upload_to='disenos/')  # Imagen del diseño (URL)
     tipo_prenda = models.ForeignKey(TipoPrenda, on_delete=models.CASCADE)  # Relación con TipoPrenda
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con el modelo User (quién es el diseñador)

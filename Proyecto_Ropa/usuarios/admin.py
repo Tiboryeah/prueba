@@ -8,7 +8,6 @@ class TipoPrendaAdmin(admin.ModelAdmin):
 
 # Personalización del modelo Disenador en el admin
 class DisenadorAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'tipo_prenda', 'usuario')  # Muestra el nombre del diseño, tipo de prenda y el usuario
     list_filter = ('tipo_prenda', 'usuario')  # Filtros por tipo de prenda y usuario
     search_fields = ('nombre', 'usuario__username')  # Permite buscar por nombre del diseño o nombre de usuario
     raw_id_fields = ('tipo_prenda', 'usuario')  # Muestra los campos de tipo_prenda y usuario como campos de búsqueda rápida
