@@ -1,7 +1,10 @@
 # settings.py
-
+import os
 from pathlib import Path
 from datetime import timedelta
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 # BASE_DIR es el directorio raíz del proyecto
@@ -29,6 +32,8 @@ INSTALLED_APPS = [
     'rest_framework',  # Para la API RESTful
     'rest_framework.authtoken',
     'rest_framework_simplejwt',  # Para JWT
+    'rest_framework_simplejwt.token_blacklist',
+
 ]
 
 # Middleware: aquí se define cómo Django maneja las solicitudes
@@ -101,21 +106,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Configuración para JWT
+#
+# settings.py
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Permitir acceso sin autenticación en todas las vistas
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 
 # Configuración del JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Tiempo de vida del token de acceso
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Tiempo de vida del token de acceso
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Tiempo de vida del token de refresco
     'ROTATE_REFRESH_TOKENS': False,  # Si deseas que los tokens de refresco roten
     'BLACKLIST_AFTER_ROTATION': True,  # Si se invalidan los tokens antiguos
     'UPDATE_LAST_LOGIN': False,  # No actualizar el último login automáticamente
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 # Configuración de la localización
@@ -127,9 +137,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Directorio de archivos estáticos (CSS, imágenes, etc.)
+# Directorio de subida de imágenes
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Archivos estáticos
 STATIC_URL = '/static/'
 
-# Archivos de medios (si trabajas con imágenes o archivos)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+from datetime import timedelta
+

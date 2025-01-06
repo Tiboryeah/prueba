@@ -8,9 +8,11 @@ class TipoPrendaAdmin(admin.ModelAdmin):
 
 # Personalización del modelo Disenador en el admin
 class DisenadorAdmin(admin.ModelAdmin):
-    list_filter = ('tipo_prenda', 'usuario')  # Filtros por tipo de prenda y usuario
-    search_fields = ('nombre', 'usuario__username')  # Permite buscar por nombre del diseño o nombre de usuario
-    raw_id_fields = ('tipo_prenda', 'usuario')  # Muestra los campos de tipo_prenda y usuario como campos de búsqueda rápida
+    raw_id_fields = ['usuario']  # Asegúrate de que 'usuario' es ForeignKey
+    list_display = ['usuario', 'tipo_prenda', 'imagen']
+
+# Registra el modelo UNA SOLA VEZ
+admin.site.register(Disenador, DisenadorAdmin)
 
 # Personalización del modelo Cuenta en el admin
 class CuentaAdmin(admin.ModelAdmin):
@@ -19,5 +21,4 @@ class CuentaAdmin(admin.ModelAdmin):
 
 # Registrar los modelos con sus clases de administración
 admin.site.register(TipoPrenda, TipoPrendaAdmin)
-admin.site.register(Disenador, DisenadorAdmin)
 admin.site.register(Cuenta, CuentaAdmin)

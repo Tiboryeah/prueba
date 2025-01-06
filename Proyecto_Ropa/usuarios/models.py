@@ -1,43 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User  # Utilizamos el modelo User de Django para gestionar usuarios.
+from django.core.files.base import ContentFile
+
 
 # Tipo de Prenda (solo 5 tipos predefinidos)
 class TipoPrenda(models.Model):
-    CAMISETA = 'Camiseta'
-    CHAQUETA = 'Chaqueta'
-    PANTALON = 'Pantalón'
-    SUDADERA = 'Sudadera'
-    VESTIDO = 'Vestido'
-
-    TIPO_PRENDA_CHOICES = [
-        (CAMISETA, 'Camiseta'),
-        (CHAQUETA, 'Chaqueta'),
-        (PANTALON, 'Pantalón'),
-        (SUDADERA, 'Sudadera'),
-        (VESTIDO, 'Vestido'),
-    ]
-
-    nombre = models.CharField(max_length=50, choices=TIPO_PRENDA_CHOICES, unique=True)
+    nombre = models.CharField(max_length=50)
 
     def __str__(self):
         return self.nombre
 
-
-# Diseño (cada usuario puede crear un diseño para un tipo de prenda)
 class Disenador(models.Model):
-    imagen = models.ImageField(upload_to='disenos/')  # Imagen del diseño (URL)
-    tipo_prenda = models.ForeignKey(TipoPrenda, on_delete=models.CASCADE)  # Relación con TipoPrenda
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con el modelo User (quién es el diseñador)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    tipo_prenda = models.ForeignKey(TipoPrenda, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='disenos/')
 
     def __str__(self):
-        return f"{self.nombre} - {self.tipo_prenda.nombre} ({self.usuario.username})"
-
+        return f"{self.usuario.username} - {self.tipo_prenda.nombre}"
 
 class Cuenta(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    apellido = models.CharField(max_length=255, default="Desconocido")  # Valor predeterminado agregado
+    apellido = models.CharField(max_length=255, default="Desconcido")
     correo = models.EmailField(unique=True)
-    contrasena = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.apellido}"
+    contrasena = models.CharField(max_length=128, default="contraseña_default")  # Define un valor predeterminado

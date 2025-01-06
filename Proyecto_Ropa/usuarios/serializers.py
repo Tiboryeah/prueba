@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from .models import Disenador, TipoPrenda, Cuenta
+
 
 # Serializer para el registro
 class SignupSerializer(serializers.ModelSerializer):
@@ -43,3 +45,16 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Correo electrónico o contraseña incorrectos.")
         
         return {'user': user}
+    
+class DisenadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Disenador
+        fields = ['id', 'imagen', 'tipo_prenda']  # Incluye los campos necesarios
+
+
+class TipoPrendaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoPrenda
+        fields = ['id', 'nombre']  # Incluye los campos que necesitas
+
+        
